@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mercado Livre-IA Design System - Paleta de cores baseada no documento
+Verde-musgo, amarelo-âmbar e cinza-claro para transmitir confiabilidade e qualidade
+*/
+
+@layer base {
+  :root {
+    /* Base colors from document palette */
+    --background: 0 0% 95%; /* #F2F2F2 */
+    --foreground: 65 100% 11%; /* #384001 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 65 100% 11%; /* #384001 */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 65 100% 11%;
+
+    /* Primary - Verde musgo escuro para cabeçalhos e textos */
+    --primary: 65 100% 11%; /* #384001 */
+    --primary-foreground: 0 0% 95%;
+
+    /* Secondary - Verde musgo claro para elementos complementares */
+    --secondary: 64 96% 20%; /* #6F7302 */
+    --secondary-foreground: 0 0% 95%;
+
+    /* Muted - Cinza claro para fundos e elementos neutros */
+    --muted: 0 0% 95%; /* #F2F2F2 */
+    --muted-foreground: 65 100% 11%;
+
+    /* Accent - Amarelo âmbar para CTAs e destaque */
+    --accent: 44 100% 49%; /* #F29F05 */
+    --accent-foreground: 65 100% 11%;
+
+    /* Warning/Golden - Amarelo dourado para detalhes */
+    --warning: 46 100% 49%; /* #F2B705 */
+    --warning-foreground: 65 100% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 85%;
+    --input: 0 0% 100%;
+    --ring: 44 100% 49%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 65 100% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 65 100% 10%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 65 100% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 95%;
+    --primary-foreground: 65 100% 11%;
+
+    --secondary: 64 96% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 65 100% 8%;
+    --muted-foreground: 0 0% 75%;
+
+    --accent: 44 100% 49%;
+    --accent-foreground: 65 100% 11%;
+
+    --warning: 46 100% 49%;
+    --warning-foreground: 65 100% 11%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 64 96% 15%;
+    --input: 64 96% 15%;
+    --ring: 44 100% 49%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
