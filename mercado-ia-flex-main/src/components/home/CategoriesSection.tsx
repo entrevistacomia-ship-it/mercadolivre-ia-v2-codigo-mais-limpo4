@@ -91,24 +91,26 @@ const CategoriesSection = () => {
               <Link
                 key={index}
                 to={`/agents?category=${category.slug}`}
+                className="animate-fade-in-up"
+                style={{animationDelay: `${index * 0.1}s`}}
               >
                 <Card
-                  className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-muted hover:border-accent/50"
+                  className="group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-2 border-transparent hover:border-accent/30 h-full"
                 >
                   <CardContent className="p-6 text-center">
-                    <div className={`w-12 h-12 mx-auto mb-4 rounded-lg bg-muted flex items-center justify-center group-hover:bg-accent/10 transition-colors ${category.color}`}>
-                      <IconComponent className="h-6 w-6" />
+                    <div className={`w-14 h-14 mx-auto mb-4 rounded-xl bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center group-hover:from-accent/20 group-hover:to-accent/5 transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-md ${category.color}`}>
+                      <IconComponent className="h-7 w-7 transition-transform group-hover:scale-110" />
                     </div>
 
-                    <h3 className="font-semibold text-primary mb-2 group-hover:text-accent transition-colors">
+                    <h3 className="font-semibold text-primary mb-2 group-hover:text-accent transition-colors duration-300 text-base">
                       {category.title}
                     </h3>
 
-                    <p className="text-sm text-muted-foreground mb-3">
+                    <p className="text-sm text-muted-foreground mb-3 min-h-[40px]">
                       {category.description}
                     </p>
 
-                    <div className="text-xs font-medium text-accent">
+                    <div className="inline-block px-3 py-1 rounded-full bg-accent/10 text-xs font-medium text-accent group-hover:bg-accent group-hover:text-accent-foreground transition-all">
                       {category.count}
                     </div>
                   </CardContent>

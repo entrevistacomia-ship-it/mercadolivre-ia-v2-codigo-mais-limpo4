@@ -49,13 +49,13 @@ const CartPage = () => {
             <p className="text-muted-foreground">Carregando...</p>
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-16">
-            <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+          <div className="text-center py-16 animate-fade-in">
+            <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4 animate-bounce-subtle" />
             <h2 className="text-xl font-semibold mb-2">Seu carrinho está vazio</h2>
             <p className="text-muted-foreground mb-6">
               Descubra agentes de automação incríveis para seu negócio
             </p>
-            <Button asChild>
+            <Button asChild className="hover:scale-105 transition-all">
               <Link to="/">Explorar Produtos</Link>
             </Button>
           </div>
@@ -63,11 +63,11 @@ const CartPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
-              {items.map((item) => (
-                <Card key={item.id}>
+              {items.map((item, index) => (
+                <Card key={item.id} className="animate-fade-in-up hover:shadow-lg transition-all" style={{animationDelay: `${index * 0.1}s`}}>
                   <CardContent className="p-6">
                     <div className="flex gap-4">
-                      <div className="w-24 h-24 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                      <div className="w-24 h-24 bg-muted rounded-lg overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
                         {item.agent?.images && item.agent.images.length > 0 ? (
                           <img
                             src={item.agent.images[0]}
@@ -75,7 +75,7 @@ const CartPage = () => {
                             className="w-full h-full object-cover"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-4xl">
+                          <div className="w-full h-full flex items-center justify-center text-4xl bg-gradient-to-br from-accent/10 to-primary/10">
                             🤖
                           </div>
                         )}
@@ -84,7 +84,7 @@ const CartPage = () => {
                       <div className="flex-1">
                         <div className="flex justify-between items-start mb-2">
                           <div>
-                            <h3 className="font-semibold text-lg leading-tight">
+                            <h3 className="font-semibold text-lg leading-tight hover:text-accent transition-colors">
                               {item.agent?.name}
                             </h3>
                             <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
@@ -94,7 +94,7 @@ const CartPage = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-muted-foreground hover:text-destructive"
+                            className="text-muted-foreground hover:text-destructive hover:scale-110 transition-all"
                             onClick={() => handleRemoveFromCart(item.id)}
                           >
                             <Trash2 className="h-4 w-4" />
@@ -103,7 +103,7 @@ const CartPage = () => {
 
                         <div className="flex items-center justify-between mt-4">
                           <div className="flex items-center gap-3">
-                            <span className="text-lg font-bold text-accent">
+                            <span className="text-xl font-bold text-accent">
                               R$ {item.agent?.price?.toFixed(2)}
                             </span>
                           </div>
@@ -117,7 +117,7 @@ const CartPage = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <Card className="sticky top-8">
+              <Card className="sticky top-8 shadow-xl animate-fade-in-up" style={{animationDelay: "0.2s"}}>
                 <CardHeader>
                   <CardTitle>Resumo do Pedido</CardTitle>
                 </CardHeader>
@@ -125,7 +125,7 @@ const CartPage = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>R$ {subtotal.toFixed(2)}</span>
+                      <span className="font-semibold">R$ {subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Taxas</span>
@@ -135,26 +135,27 @@ const CartPage = () => {
 
                   <Separator />
 
-                  <div className="flex justify-between text-lg font-bold">
+                  <div className="flex justify-between text-xl font-bold">
                     <span>Total</span>
                     <span className="text-accent">R$ {total.toFixed(2)}</span>
                   </div>
-                  
+
                   <div className="space-y-3 pt-4">
-                    <Button 
-                      asChild 
-                      size="lg" 
-                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+                    <Button
+                      asChild
+                      size="lg"
+                      className="w-full bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-105 transition-all shadow-md hover:shadow-xl"
                     >
                       <Link to="/checkout">Finalizar Compra</Link>
                     </Button>
-                    
-                    <Button variant="outline" asChild className="w-full">
+
+                    <Button variant="outline" asChild className="w-full hover:scale-105 transition-all">
                       <Link to="/">Continuar Comprando</Link>
                     </Button>
                   </div>
-                  
-                  <div className="text-xs text-muted-foreground text-center pt-2">
+
+                  <div className="text-xs text-muted-foreground text-center pt-2 flex items-center justify-center gap-1">
+                    <div className="w-2 h-2 bg-accent rounded-full animate-pulse-slow" />
                     Pagamento seguro via Mercado Pago
                   </div>
                 </CardContent>

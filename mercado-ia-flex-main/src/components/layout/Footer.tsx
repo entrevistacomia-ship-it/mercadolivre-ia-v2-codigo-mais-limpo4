@@ -31,11 +31,11 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Navegação</h3>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
-              <li><Link to="/home" className="hover:text-accent transition-colors">Página Inicial</Link></li>
-              <li><Link to="/agents" className="hover:text-accent transition-colors">Todos os Agentes</Link></li>
-              <li><Link to="/about" className="hover:text-accent transition-colors">Sobre Nós</Link></li>
-              <li><Link to="/seller" className="hover:text-accent transition-colors">Vendedores</Link></li>
-              <li><Link to="/how-it-works" className="hover:text-accent transition-colors">Como Funciona</Link></li>
+              <li><Link to="/home" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Página Inicial</Link></li>
+              <li><Link to="/agents" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Todos os Agentes</Link></li>
+              <li><Link to="/about" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Sobre Nós</Link></li>
+              <li><Link to="/seller" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Vendedores</Link></li>
+              <li><Link to="/how-it-works" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Como Funciona</Link></li>
             </ul>
           </div>
 
@@ -43,11 +43,11 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Suporte</h3>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
-              <li><Link to="/help" className="hover:text-accent transition-colors">Central de Ajuda</Link></li>
-              <li><Link to="/help" className="hover:text-accent transition-colors">Contato</Link></li>
-              <li><Link to="/privacy" className="hover:text-accent transition-colors">Política de Privacidade</Link></li>
-              <li><Link to="/help" className="hover:text-accent transition-colors">Termos de Uso</Link></li>
-              <li><Link to="/add-product" className="hover:text-accent transition-colors">Vender na Plataforma</Link></li>
+              <li><Link to="/help" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Central de Ajuda</Link></li>
+              <li><Link to="/help" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Contato</Link></li>
+              <li><Link to="/privacy" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Política de Privacidade</Link></li>
+              <li><Link to="/help" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Termos de Uso</Link></li>
+              <li><Link to="/add-product" className="hover:text-accent transition-all hover:translate-x-1 inline-block">Vender na Plataforma</Link></li>
             </ul>
           </div>
 
@@ -58,12 +58,12 @@ const Footer = () => {
               Receba novidades sobre automação e novos agentes.
             </p>
             <div className="flex gap-2 mb-4">
-              <Input 
-                type="email" 
+              <Input
+                type="email"
                 placeholder="Seu e-mail"
-                className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60"
+                className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60 focus:border-accent transition-all"
               />
-              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button className="bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-110 transition-transform shadow-md hover:shadow-lg">
                 <Mail className="h-4 w-4" />
               </Button>
             </div>

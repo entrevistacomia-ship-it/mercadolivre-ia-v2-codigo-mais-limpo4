@@ -152,15 +152,15 @@ const ProductPage = () => {
             {agent.images && agent.images.length > 1 && (
               <div className="grid grid-cols-4 gap-2">
                 {agent.images.map((image, index) => (
-                  <div 
-                    key={index} 
-                    className={`aspect-square rounded-lg bg-muted overflow-hidden cursor-pointer hover:opacity-80 transition-opacity ${
-                      selectedImage === index ? 'ring-2 ring-accent' : ''
+                  <div
+                    key={index}
+                    className={`aspect-square rounded-lg bg-muted overflow-hidden cursor-pointer hover:opacity-80 transition-all hover:scale-105 ${
+                      selectedImage === index ? 'ring-4 ring-accent shadow-lg' : 'ring-2 ring-transparent'
                     }`}
                     onClick={() => setSelectedImage(index)}
                   >
-                    <img 
-                      src={image} 
+                    <img
+                      src={image}
                       alt={`${agent.name} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -203,21 +203,21 @@ const ProductPage = () => {
             </div>
 
             {/* Actions */}
-            <div className="space-y-3">
-              <Button 
-                size="lg" 
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"
+            <div className="space-y-3 animate-fade-in-up" style={{animationDelay: "0.3s"}}>
+              <Button
+                size="lg"
+                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground transition-all hover:scale-105 hover:shadow-xl"
                 onClick={handleAddToCart}
               >
                 <ShoppingCart className="h-5 w-5 mr-2" />
                 Adicionar ao Carrinho
               </Button>
               <div className="flex gap-2">
-                <Button variant="outline" size="lg" className="flex-1">
+                <Button variant="outline" size="lg" className="flex-1 hover:scale-105 transition-all">
                   <Heart className="h-5 w-5 mr-2" />
                   Favoritar
                 </Button>
-                <Button variant="outline" size="lg" className="flex-1">
+                <Button variant="outline" size="lg" className="flex-1 hover:scale-105 transition-all">
                   <Share2 className="h-5 w-5 mr-2" />
                   Compartilhar
                 </Button>

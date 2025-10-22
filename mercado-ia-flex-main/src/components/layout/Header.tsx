@@ -42,33 +42,33 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm transition-all duration-300">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link to="/home" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-lg bg-accent flex items-center justify-center">
+          <Link to="/home" className="flex items-center space-x-2 group">
+            <div className="h-8 w-8 rounded-lg bg-accent flex items-center justify-center transition-all group-hover:scale-110 group-hover:shadow-lg">
               <span className="text-accent-foreground font-bold text-sm">ML</span>
             </div>
-            <span className="text-lg font-bold text-primary hidden sm:inline">Mercado Livre-IA</span>
+            <span className="text-lg font-bold text-primary hidden sm:inline group-hover:text-accent transition-colors">Mercado Livre-IA</span>
           </Link>
 
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-            <div className="relative w-full">
+            <div className="relative w-full group">
               <Input
                 type="text"
                 placeholder="Buscar agentes de automação..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-10"
+                className="pl-10 h-10 transition-all focus:shadow-lg"
               />
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
             </div>
           </div>
 
           <div className="flex items-center space-x-2">
             <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="hover:scale-110 transition-transform">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -99,13 +99,13 @@ const Header = () => {
               </SheetContent>
             </Sheet>
 
-            <Button asChild variant="ghost" size="icon" className="relative">
+            <Button asChild variant="ghost" size="icon" className="relative hover:scale-110 transition-transform">
               <Link to="/cart">
                 <ShoppingCart className="h-5 w-5" />
                 {itemCount > 0 && (
                   <Badge
                     variant="secondary"
-                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-accent text-accent-foreground"
+                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-accent text-accent-foreground animate-scale-in shadow-lg"
                   >
                     {itemCount}
                   </Badge>
