@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mercado IA Flex</string>
+    <string name="title_activity_main">Mercado IA Flex</string>
+    <string name="package_name">com.mercadoia.flex</string>
+    <string name="custom_url_scheme">com.mercadoia.flex</string>
+</resources>
