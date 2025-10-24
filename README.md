@@ -2,6 +2,22 @@
 
 Plataforma de marketplace para compra e venda de agentes de IA, com integração Supabase e sistema de autenticação completo.
 
+---
+
+## 📚 DOCUMENTAÇÃO COMPLETA
+
+Este projeto possui documentação detalhada para diferentes casos de uso:
+
+- **[📖 PROJECT-INDEX.md](PROJECT-INDEX.md)** - **COMECE AQUI** - Índice mestre com navegação rápida
+- **[🤖 GOOGLE-AI-STUDIO-SETUP.md](GOOGLE-AI-STUDIO-SETUP.md)** - Para desenvolvimento com Google AI Studio/Gemini
+- **[📱 ANDROID-STUDIO-GUIDE.md](ANDROID-STUDIO-GUIDE.md)** - Para compilação Android
+- **[🔧 AI-MAINTENANCE-GUIDE.md](AI-MAINTENANCE-GUIDE.md)** - Para manutenção e edição por agentes IA
+- **[✅ PRE-BUILD-CHECKLIST.md](PRE-BUILD-CHECKLIST.md)** - Checklist pré-compilação Android
+
+**IMPORTANTE PARA AGENTES IA**: Sempre comece lendo o [PROJECT-INDEX.md](PROJECT-INDEX.md) para entender a estrutura completa do projeto e qual documentação específica você precisa.
+
+---
+
 ## Requisitos
 
 - Node.js 18+ (recomendado: instalar com [nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
