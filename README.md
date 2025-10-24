@@ -7,8 +7,9 @@ Plataforma de marketplace para compra e venda de agentes de IA, com integração
 - Node.js 18+ (recomendado: instalar com [nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
 - npm ou yarn
 - Conta no Supabase (para configuração do banco de dados)
+- **Para mobile**: Android Studio (Android) ou Xcode (iOS)
 
-## Configuração Inicial
+## Configuração Inicial (Web)
 
 ### 1. Clone o Repositório
 
@@ -25,36 +26,14 @@ npm install
 
 ### 3. Configure as Variáveis de Ambiente
 
-O arquivo `.env` já existe no projeto, mas você precisa verificar se as credenciais do Supabase estão corretas.
-
-**IMPORTANTE**: O projeto usa configuração em dois lugares diferentes:
-
-#### a) Arquivo `.env` (raiz do projeto)
+O arquivo `.env` já existe no projeto. Verifique se as credenciais do Supabase estão corretas:
 
 ```env
 VITE_SUPABASE_URL=https://0ec90b57d6e95fcbda19832f.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-#### b) Arquivo `src/lib/supabase.ts`
-
-Este arquivo contém credenciais hardcoded que podem estar diferentes do `.env`:
-
-```typescript
-const supabaseUrl = 'https://zdjjnzawwotojarmnepr.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
-```
-
-**SOLUÇÃO PARA PREVIEW**: Para garantir que o projeto funcione corretamente, você DEVE usar as mesmas credenciais em ambos os lugares. Recomenda-se atualizar o `src/lib/supabase.ts` para usar as variáveis de ambiente:
-
-```typescript
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-```
+**IMPORTANTE**: O projeto já está configurado para usar as variáveis de ambiente do `.env` automaticamente. Não há necessidade de editar outros arquivos.
 
 ### 4. Configure o Banco de Dados Supabase
 
@@ -63,10 +42,11 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 1. Vá para [https://supabase.com/dashboard](https://supabase.com/dashboard)
 2. Selecione ou crie um projeto
 3. Copie a URL e a Anon Key do projeto (Settings > API)
+4. Atualize o arquivo `.env` com essas credenciais
 
 #### b) Execute as Migrações
 
-O projeto possui migrações SQL em `supabase/migrations/`. Execute-as no SQL Editor do Supabase na seguinte ordem:
+O projeto possui migrações SQL em `supabase/migrations/`. Execute-as no SQL Editor do Supabase:
 
 1. Abra o SQL Editor no painel do Supabase
 2. Execute o conteúdo de `supabase/migrations/20251007195806_create_marketplace_schema.sql`
@@ -80,13 +60,13 @@ Este script cria todas as tabelas necessárias:
 - `favorites` - Favoritos
 - `cart_items` - Itens no carrinho
 
-#### c) Verifique o Auth
+#### c) Configure o Auth
 
-No painel do Supabase, vá para Authentication > Settings e verifique:
+No painel do Supabase, vá para Authentication > Settings:
 - Email confirmations: **desabilitado** (para testes)
-- Site URL: Configure para o endereço do seu preview (ex: `http://localhost:8080`)
+- Site URL: `http://localhost:8080` (para desenvolvimento web)
 
-### 5. Execute o Projeto em Desenvolvimento
+### 5. Execute o Projeto Web
 
 ```bash
 npm run dev
@@ -94,7 +74,7 @@ npm run dev
 
 O projeto estará disponível em: `http://localhost:8080`
 
-### 6. Build do Projeto
+### 6. Build do Projeto Web
 
 Para criar a versão de produção:
 
@@ -108,25 +88,135 @@ Para preview da versão de produção:
 npm run preview
 ```
 
+---
+
+## Configuração para Android/iOS (Capacitor)
+
+### Pré-requisitos Mobile
+
+#### Para Android:
+- Android Studio instalado
+- SDK Android 33 ou superior
+- Java JDK 17
+
+#### Para iOS:
+- Xcode instalado (apenas macOS)
+- CocoaPods instalado: `sudo gem install cocoapods`
+
+### Passos para Compilar o App Mobile
+
+#### 1. Build do Projeto Web
+
+Primeiro, compile a versão web do projeto:
+
+```bash
+npm run build
+```
+
+**IMPORTANTE**: Sempre execute `npm run build` antes de sincronizar com o Capacitor. Sem o build, o app mobile ficará vazio ou redirecionará para páginas externas incorretas.
+
+#### 2. Sincronize com Capacitor
+
+Após o build, sincronize os arquivos com as plataformas mobile:
+
+```bash
+npx cap sync
+```
+
+Este comando:
+- Copia os arquivos do `dist/` para as pastas `android/` e `ios/`
+- Atualiza os plugins do Capacitor
+- Prepara o projeto para ser aberto nas IDEs nativas
+
+#### 3. Abra no Android Studio
+
+```bash
+npx cap open android
+```
+
+Ou manualmente: abra a pasta `android/` no Android Studio.
+
+#### 4. Configure o Projeto Android
+
+No Android Studio:
+
+1. Aguarde o Gradle sincronizar (primeira vez pode demorar)
+2. Verifique o `android/app/build.gradle`:
+   - `applicationId`: deve estar configurado (ex: `com.mercadoia.flex`)
+   - `minSdk`: 22 ou superior
+   - `targetSdk`: 33 ou superior
+
+3. Verifique o `android/app/src/main/AndroidManifest.xml`:
+   - Certifique-se de que não há redirecionamentos para URLs externas
+   - O `android:name` da MainActivity deve estar correto
+
+#### 5. Execute ou Gere o APK
+
+**Para testar em dispositivo/emulador:**
+
+1. Conecte um dispositivo Android via USB (com depuração USB ativada) ou inicie um emulador
+2. Clique em "Run" (ou pressione Shift+F10) no Android Studio
+
+**Para gerar APK de produção:**
+
+1. No Android Studio, vá em: `Build > Build Bundle(s) / APK(s) > Build APK(s)`
+2. O APK será gerado em: `android/app/build/outputs/apk/debug/app-debug.apk`
+
+**Para gerar APK assinado (release):**
+
+1. Vá em: `Build > Generate Signed Bundle / APK`
+2. Siga o wizard para criar/usar uma keystore
+3. O APK será gerado em: `android/app/build/outputs/apk/release/app-release.apk`
+
+#### 6. Para iOS (apenas macOS)
+
+```bash
+npx cap open ios
+```
+
+No Xcode:
+
+1. Aguarde as dependências serem instaladas
+2. Configure o Team de desenvolvimento (Xcode > Preferences > Accounts)
+3. Configure o Bundle Identifier único
+4. Conecte um dispositivo iOS ou use o simulador
+5. Clique em "Run" para compilar e executar
+
+---
+
+## Fluxo Completo de Atualização Mobile
+
+Sempre que fizer alterações no código:
+
+```bash
+# 1. Build da aplicação web
+npm run build
+
+# 2. Sincronizar com Capacitor
+npx cap sync
+
+# 3. Abrir no Android Studio ou Xcode
+npx cap open android
+# ou
+npx cap open ios
+```
+
+---
+
 ## Estrutura do Projeto
 
 ```
 /
-├── src/
-│   ├── components/      # Componentes React reutilizáveis
-│   │   ├── auth/        # Componentes de autenticação
-│   │   ├── home/        # Componentes da página inicial
-│   │   ├── layout/      # Header, Footer
-│   │   └── ui/          # Componentes UI do shadcn
-│   ├── contexts/        # Contextos React (Auth, Cart)
+├── src/                 # Código fonte React
+│   ├── components/      # Componentes React
+│   ├── contexts/        # Contextos (Auth, Cart)
 │   ├── hooks/           # Hooks customizados
-│   ├── lib/             # Utilitários e configurações
-│   │   └── supabase.ts  # Cliente Supabase
-│   ├── pages/           # Páginas da aplicação
-│   └── integrations/    # Integrações externas
-├── supabase/
-│   ├── migrations/      # Scripts SQL de migração
-│   └── functions/       # Edge Functions
+│   ├── lib/             # Utilitários e Supabase
+│   └── pages/           # Páginas da aplicação
+├── android/             # Projeto Android (Capacitor)
+├── ios/                 # Projeto iOS (Capacitor)
+├── supabase/            # Migrações e Edge Functions
+├── dist/                # Build da aplicação web (gerado)
 └── public/              # Arquivos estáticos
 ```
 
@@ -138,7 +228,7 @@ npm run preview
 - **Roteamento**: React Router v6
 - **Estado**: React Context API + React Query
 - **Backend**: Supabase (Auth, Database, Storage)
-- **Mobile**: Capacitor (Android/iOS)
+- **Mobile**: Capacitor 7
 
 ## Funcionalidades
 
@@ -164,78 +254,86 @@ npm run preview
 - Gestão de perfil
 - Proteção de rotas
 
+---
+
 ## Troubleshooting
 
-### Problema: "Invalid API key"
+### Problema: "Invalid API key" ou erros de Supabase
 
-**Causa**: Credenciais do Supabase não configuradas corretamente ou divergentes entre `.env` e `src/lib/supabase.ts`
+**Causa**: Credenciais do Supabase incorretas
 
 **Solução**:
-1. Verifique se as credenciais no `.env` estão corretas
-2. Certifique-se de que `src/lib/supabase.ts` usa as mesmas credenciais
-3. Reinicie o servidor de desenvolvimento após alterar o `.env`
+1. Verifique o arquivo `.env` na raiz do projeto
+2. Confirme que VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY estão corretas
+3. Execute `npm run build` novamente
+4. Execute `npx cap sync` para atualizar o mobile
 
 ### Problema: "Table does not exist"
 
-**Causa**: Migrações não foram executadas no banco de dados
+**Causa**: Migrações não executadas no banco de dados
 
 **Solução**:
-1. Acesse o SQL Editor no Supabase
+1. Acesse o SQL Editor no Supabase Dashboard
 2. Execute os scripts em `supabase/migrations/`
-3. Verifique se todas as tabelas foram criadas em Database > Tables
+3. Verifique em Database > Tables se as tabelas foram criadas
 
-### Problema: "Auth session missing"
+### Problema: App mobile abre tela em branco ou URL externa
 
-**Causa**: Configuração de autenticação incorreta
-
-**Solução**:
-1. Verifique a Site URL em Authentication > Settings
-2. Adicione redirect URLs apropriadas
-3. Limpe o cache do navegador e localStorage
-
-### Problema: Preview não carrega ou fica em branco
-
-**Causa**: Divergência entre as configurações do Supabase ou problemas com variáveis de ambiente
+**Causa**: Build web não foi executado ou sincronização incorreta
 
 **Solução**:
-1. Verifique o console do navegador para erros
-2. Confirme que as variáveis de ambiente estão carregadas (console.log)
-3. Certifique-se de que o build foi feito após alterar o `.env`
-4. Verifique se há erros de CORS no Supabase (Project Settings > API)
+1. Execute `npm run build` (OBRIGATÓRIO)
+2. Execute `npx cap sync`
+3. Limpe o projeto no Android Studio: `Build > Clean Project`
+4. Recompile: `Build > Rebuild Project`
+
+### Problema: Gradle sync failed
+
+**Causa**: Configuração do Android ou dependências
+
+**Solução**:
+1. Verifique se o Android SDK está instalado
+2. No Android Studio: `File > Invalidate Caches / Restart`
+3. Execute no terminal dentro de `android/`: `./gradlew clean`
+
+### Problema: Erro de assinatura no iOS
+
+**Causa**: Certificado de desenvolvedor não configurado
+
+**Solução**:
+1. No Xcode, vá em: Signing & Capabilities
+2. Selecione seu Team de desenvolvimento
+3. Configure um Bundle Identifier único
+
+---
 
 ## Deploy
 
-### Lovable
-
-Simplesmente acesse [Lovable](https://lovable.dev/projects/a69962a1-5aec-4bc6-821b-ef8ee57ceac7) e clique em Share → Publish.
-
-### Vercel/Netlify
+### Web (Vercel/Netlify)
 
 1. Faça o build do projeto: `npm run build`
-2. Configure as variáveis de ambiente no painel
+2. Configure as variáveis de ambiente no painel da plataforma
 3. Faça deploy da pasta `dist/`
 
-### Capacitor (Android/iOS)
+### Android (Google Play Store)
 
-```bash
-# Build web
-npm run build
+1. Gere um APK/Bundle assinado no Android Studio
+2. Siga o processo de publicação da Google Play Console
+3. [Guia oficial do Google](https://support.google.com/googleplay/android-developer/answer/9859152)
 
-# Sincronizar com Capacitor
-npx cap sync
+### iOS (Apple App Store)
 
-# Abrir no Android Studio
-npx cap open android
+1. Archive o app no Xcode
+2. Upload via App Store Connect
+3. [Guia oficial da Apple](https://developer.apple.com/app-store/submitting/)
 
-# Abrir no Xcode
-npx cap open ios
-```
+---
 
 ## Suporte
 
-Para problemas com o projeto Lovable, visite: [Documentação Lovable](https://docs.lovable.dev)
-
-Para problemas com Supabase, visite: [Documentação Supabase](https://supabase.com/docs)
+- Documentação Supabase: [https://supabase.com/docs](https://supabase.com/docs)
+- Documentação Capacitor: [https://capacitorjs.com/docs](https://capacitorjs.com/docs)
+- Documentação Vite: [https://vitejs.dev](https://vitejs.dev)
 
 ## Licença
 
