@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, Download, Eye, ShoppingCart } from "lucide-react";
+import { Star, Download, Eye, ShoppingCart, Heart, TrendingUp, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase, Agent } from "@/lib/supabase";
 import { useCart } from "@/contexts/CartContext";
@@ -12,9 +12,23 @@ import { toast } from "@/hooks/use-toast";
 const FeaturedProducts = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [favorited, setFavorited] = useState<Set<string>>(new Set());
   const { addToCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const toggleFavorite = (id: string) => {
+    setFavorited(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
 
   useEffect(() => {
     loadFeaturedProducts();
@@ -98,56 +112,101 @@ const FeaturedProducts = () => {
             {featuredProducts.map((product, index) => (
             <Card
               key={product.id}
-              className="group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-3 overflow-hidden border-2 border-transparent hover:border-accent/20 animate-fade-in-up"
+              className="group cursor-pointer transition-all duration-500 hover:shadow-2xl hover:-translate-y-4 overflow-hidden border-2 border-transparent hover:border-accent/30 animate-fade-in-up relative"
               style={{animationDelay: `${index * 0.1}s`}}
+              onMouseEnter={() => setHoveredCard(product.id)}
+              onMouseLeave={() => setHoveredCard(null)}
             >
+              {/* Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-accent/0 via-accent/10 to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               <div className="relative overflow-hidden">
                 {/* Product Image */}
-                <div className="h-48 bg-gradient-to-br from-accent/10 via-primary/5 to-warning/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                  <div className="text-6xl opacity-20 group-hover:opacity-30 transition-opacity">🤖</div>
+                <div className="h-48 bg-gradient-to-br from-accent/10 via-primary/5 to-warning/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 relative">
+                  <div className="text-6xl opacity-20 group-hover:opacity-30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">🤖</div>
+
+                  {/* Animated Sparkles */}
+                  {hoveredCard === product.id && (
+                    <>
+                      <Sparkles className="absolute top-4 right-4 w-4 h-4 text-accent animate-pulse-slow" />
+                      <Sparkles className="absolute bottom-4 left-4 w-3 h-3 text-warning animate-pulse-slow" style={{animationDelay: '0.5s'}} />
+                    </>
+                  )}
                 </div>
 
                 {/* Gradient Overlay on Hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                 {/* Badges */}
                 <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-                  <Badge className="bg-accent text-accent-foreground shadow-lg animate-scale-in">Destaque</Badge>
+                  <Badge className="bg-gradient-to-r from-accent to-warning text-accent-foreground shadow-lg animate-scale-in backdrop-blur-sm border border-accent/20">
+                    <TrendingUp className="w-3 h-3 mr-1 inline" />
+                    Destaque
+                  </Badge>
                 </div>
 
                 {/* Quick Actions */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 z-10">
-                  <Button size="sm" variant="secondary" className="h-8 w-8 p-0 shadow-lg hover:scale-110 transition-transform">
+                <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0 z-10">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="h-8 w-8 p-0 shadow-lg hover:scale-110 transition-all duration-300 backdrop-blur-md bg-background/80"
+                    onClick={() => toggleFavorite(product.id)}
+                  >
+                    <Heart className={`h-4 w-4 transition-all duration-300 ${
+                      favorited.has(product.id) ? 'fill-red-500 text-red-500 scale-110' : ''
+                    }`} />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="h-8 w-8 p-0 shadow-lg hover:scale-110 transition-all duration-300 backdrop-blur-md bg-background/80"
+                  >
                     <Eye className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
 
-              <CardContent className="p-4">
+              <CardContent className="p-4 relative z-10">
                 {/* Title & Description */}
-                <h3 className="font-semibold text-primary mb-2 line-clamp-1 group-hover:text-accent transition-colors duration-300">
+                <h3 className="font-semibold text-primary mb-2 line-clamp-1 group-hover:text-accent transition-colors duration-300 text-base">
                   {product.name}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-2 leading-relaxed">
                   {product.description}
                 </p>
 
+                {/* Rating & Stats */}
+                <div className="flex items-center gap-4 mb-3 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-warning text-warning" />
+                    <span className="font-medium text-foreground">4.8</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Download className="w-3 h-3" />
+                    <span>120+ vendas</span>
+                  </div>
+                </div>
+
                 {/* Price */}
-                <div className="flex items-center gap-2 mb-4 mt-6">
-                  <span className="text-2xl font-bold text-primary group-hover:text-accent transition-colors">
-                    R$ {product.price.toFixed(2)}
-                  </span>
+                <div className="flex items-center justify-between mb-4 mt-4">
+                  <div>
+                    <span className="text-2xl font-bold text-primary group-hover:text-accent transition-colors duration-300 bg-gradient-to-r from-accent to-warning bg-clip-text group-hover:text-transparent">
+                      R$ {product.price.toFixed(2)}
+                    </span>
+                    <div className="text-xs text-muted-foreground">ou 3x sem juros</div>
+                  </div>
                 </div>
               </CardContent>
 
-              <CardFooter className="p-4 pt-0">
+              <CardFooter className="p-4 pt-0 relative z-10">
                 <Button
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground transition-all hover:scale-105 shadow-md hover:shadow-xl"
+                  className="w-full bg-gradient-to-r from-accent to-warning hover:from-accent/90 hover:to-warning/90 text-accent-foreground transition-all duration-300 hover:scale-105 shadow-md hover:shadow-xl group/btn relative overflow-hidden"
                   size="sm"
                   onClick={() => handleAddToCart(product.id)}
                 >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Adicionar ao Carrinho
+                  <span className="absolute inset-0 bg-gradient-to-r from-warning to-accent opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
+                  <ShoppingCart className="h-4 w-4 mr-2 relative z-10 transition-transform group-hover/btn:scale-110" />
+                  <span className="relative z-10">Adicionar ao Carrinho</span>
                 </Button>
               </CardFooter>
             </Card>
